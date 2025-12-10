@@ -55,14 +55,15 @@
 
     body {
       margin: 0;
-      min-height: 100%;
+      height: 100%;
       display: flex;
+      flex-direction: column;
+      justify-content: flex-end; /* anchor to bottom */
       align-items: center;
-      justify-content: center;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text',
         sans-serif;
       color: var(--text);
-      padding: 10px;
+      padding: 0;
       background:
         /* big brick wall */
         repeating-linear-gradient(
@@ -103,6 +104,7 @@
       position: relative;
       overflow: hidden;
       box-sizing: border-box;
+      margin-top: auto; /* keep widget at bottom */
     }
 
     .xeneon-widget::before {
@@ -163,9 +165,9 @@
       box-shadow:
         inset 0 0 0 1px rgba(0, 0, 0, 0.9),
         0 0 40px rgba(0, 0, 0, 0.9);
-      /* Resize behavior B: responsive height based on width + viewport */
+      /* responsive height */
       height: clamp(260px, 56.25vw, 70vh);
-      max-height: calc(100vh - 140px); /* leave room for HUD + padding */
+      max-height: calc(100vh - 140px);
     }
 
     /* Scene */
@@ -518,8 +520,6 @@
       flex-wrap: wrap;
     }
 
-    /* Opulent Hardware pill */
-
     .brand-pill {
       display: inline-flex;
       align-items: center;
@@ -690,19 +690,6 @@
       box-shadow:
         0 0 10px rgba(248, 250, 252, 0.85),
         0 0 0 1px rgba(15, 6, 7, 0.9);
-    }
-
-    .footer-hint {
-      font-size: 0.7rem;
-      opacity: 0.7;
-      text-align: right;
-      padding: 0 2px 1px;
-      color: #fee2e2;
-    }
-
-    .footer-hint span {
-      opacity: 0.9;
-      font-weight: 500;
     }
 
     @media (max-width: 640px) {
@@ -876,10 +863,6 @@
         </button>
       </div>
     </div>
-
-    <div class="footer-hint">
-      <span>Tip:</span> Auto-resizes with viewport/iframe – all brick, all flames.
-    </div>
   </div>
 
   <script>
@@ -896,7 +879,6 @@
         roaring: 'Roaring'
       };
 
-      // Fire mode switching
       chips.forEach((chip) => {
         chip.addEventListener('click', () => {
           const mode = chip.dataset.mode;
@@ -911,14 +893,12 @@
         });
       });
 
-      // Theme toggle (light/dark)
       themeToggle.addEventListener('click', () => {
         const current = htmlEl.getAttribute('data-theme') || 'dark';
         const next = current === 'dark' ? 'light' : 'dark';
         htmlEl.setAttribute('data-theme', next);
       });
 
-      // Respect prefers-color-scheme on first load
       const prefersLight = window.matchMedia &&
         window.matchMedia('(prefers-color-scheme: light)').matches;
 
